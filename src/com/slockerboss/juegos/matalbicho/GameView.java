@@ -68,59 +68,12 @@ public class GameView extends SurfaceView {
 
 	}
 
-	protected void crearOdestruir() {
-
-		if (numSprites > 0 && !ultimo) {
-
-			if (xtouch > this.getWidth() / 2) {
-				eliminarSprites(1);
-				numSprites--;
-				if (numSprites == 1) {
-					ultimo = true;
-				}
-			}
-			// else crearSprites(1);
-
-		} else if (xtouch < this.getWidth() / 2 && numSprites < 4 && xtouch !=0) {
-			crearSprites(1);
-			numSprites++;
-			ultimo = false;
-		}
-		;
-		xtouch = 0;
-	}
-
-	private void eliminarSprites(int i) {
-		// implementar borrar varios
-		sprites.remove(1);
-	}
-
-	private void crearSprites(int numsprites2) {
-		miBitmap = BitmapFactory
-				.decodeResource(getResources(), R.drawable.bad1);
-
-		for (int i = 0; i < numsprites2; i++) {
-			sprites.add(new Sprite(this, miBitmap));
-		}
-
-	}
-
-	/* ### SETTERS/GETTERS ### */
-	public void comunicateXtouch(float x) {
-		this.xtouch = x;
-
-	}
-
-	public void comunicateTtouch(float y) {
-		this.ytouch = y;
-
-	}
-
 	/* ### EL RESTO ### */
 	@Override
 	protected void onDraw(Canvas canvas) {
-		circulo = new Circle(this, xtouch, ytouch, 25);
 		canvas.drawColor(Color.BLACK);
+		circulo = new Circle(this, xtouch, ytouch, 25);
+
 		paint.setColor(Color.RED);
 		canvas.drawLine(this.getWidth() / 2, 0, this.getWidth() / 2,
 				this.getHeight(), paint);
@@ -129,8 +82,47 @@ public class GameView extends SurfaceView {
 			circulo.dibuja(canvas);
 		}
 		crearOdestruir();
+		xtouch = 0;
+
 		for (Sprite sprite : sprites) {
 			sprite.dibuja(canvas);
+		}
+
+	}
+
+	protected void crearOdestruir() {
+
+		if (xtouch > this.getWidth() / 2 ) {
+			if (numSprites > 0 && !ultimo) {
+
+				eliminarSprites(1);
+				numSprites--;
+				if (numSprites == 1) {
+					ultimo = true;
+				}
+			}
+
+		} else if (numSprites < 4 && xtouch != 0) {
+			crearSprites(1);
+			numSprites++;
+			ultimo = false;
+		}
+
+	}
+
+	private void eliminarSprites(int numSprites) {
+		for (int i = 0; i < numSprites; i++) {
+			sprites.remove(1);
+		}
+
+	}
+
+	private void crearSprites(int numSprites) {
+		miBitmap = BitmapFactory
+				.decodeResource(getResources(), R.drawable.bad1);
+
+		for (int i = 0; i < numSprites; i++) {
+			sprites.add(new Sprite(this, miBitmap));
 		}
 
 	}
@@ -142,6 +134,17 @@ public class GameView extends SurfaceView {
 
 	public void arrancarJuego() {
 		loop.setRunning(true);
+
+	}
+
+	/* ### SETTERS/GETTERS ### */
+	public void comunicateXtouch(float x) {
+		this.xtouch = x;
+
+	}
+
+	public void comunicateTtouch(float y) {
+		this.ytouch = y;
 
 	}
 
