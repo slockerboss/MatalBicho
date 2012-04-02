@@ -9,12 +9,14 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
 public class GameView extends SurfaceView {
-	private static final int NUMSPRITES = 4;
-	private int numSprites;
+	
+	private int numSprites = 4;
 	Loop loop;
 	SurfaceHolder sfHolder;
 
@@ -30,16 +32,29 @@ public class GameView extends SurfaceView {
 	private boolean ultimo = false;
 
 	/* ### CONSTRUCTORS ### */
-	public GameView(Context context) {
+	public GameView(Context context){
 		super(context);
+	}
+	public GameView(Context context, int numSprites) {
+		super(context);
+		this.numSprites = numSprites;
 		paint = new Paint();
 		loop = new Loop(this);
-		numSprites = NUMSPRITES;
+		
 		sfHolder = getHolder();
+		this.setOnTouchListener(new OnTouchListener() {
+
+			public boolean onTouch(View gameView, MotionEvent event) {
+				xtouch = event.getX();
+				ytouch = event.getY();
+				return false;
+
+			}
+		});
 		sfHolder.addCallback(new SurfaceHolder.Callback() {
 
 			public void surfaceCreated(SurfaceHolder holder) {
-				crearSprites(NUMSPRITES);
+				crearSprites(GameView.this.numSprites);
 
 				loop.setRunning(true);
 				loop.start();
@@ -92,7 +107,7 @@ public class GameView extends SurfaceView {
 
 	protected void crearOdestruir() {
 
-		if (xtouch > this.getWidth() / 2 ) {
+		if (xtouch > this.getWidth() / 2) {
 			if (numSprites > 0 && !ultimo) {
 
 				eliminarSprites(1);
