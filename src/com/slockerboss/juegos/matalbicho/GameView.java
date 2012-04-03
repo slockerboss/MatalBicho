@@ -15,7 +15,7 @@ import android.view.SurfaceView;
 import android.view.View;
 
 /**
- * @author Luis Slokcer
+ * @author Luis Slocker
  * @version 1.0
  * 
  *          The GameView class is the custom view of the game, it extends
@@ -29,6 +29,7 @@ public class GameView extends SurfaceView {
 	SurfaceHolder sfHolder;
 
 	Bitmap miBitmap;
+	Bitmap miBitmap2;
 	Paint paint;
 
 	float xtouch = 0;
@@ -38,6 +39,7 @@ public class GameView extends SurfaceView {
 
 	Circle circulo;
 	boolean ultimo = false;
+	private int cont;
 
 	/* ### CONSTRUCTORS ### */
 	public GameView(Context context) {
@@ -56,6 +58,7 @@ public class GameView extends SurfaceView {
 			public boolean onTouch(View gameView, MotionEvent event) {
 				xtouch = event.getX();
 				ytouch = event.getY();
+				crearOdestruir();
 				return false;
 
 			}
@@ -105,7 +108,7 @@ public class GameView extends SurfaceView {
 		if (xtouch != 0) {
 			circulo.dibuja(canvas);
 		}
-		crearOdestruir();
+
 		xtouch = 0;
 
 		for (Sprite sprite : sprites) {
@@ -117,16 +120,27 @@ public class GameView extends SurfaceView {
 	protected void crearOdestruir() {
 
 		if (xtouch > this.getWidth() / 2) {
-			if (numSprites > 0 && !ultimo) {
+			if (!ultimo) {
+				synchronized (this.getHolder()) {
 
-				eliminarSprites(1);
-				numSprites--;
+				}
+				for (cont = sprites.size() - 1; cont >= 0; cont--) {
+					Sprite spriteTemp = sprites.get(cont);
+					if (spriteTemp.isColision(xtouch, ytouch)) {
+						sprites.remove(cont);
+						numSprites--;
+						break; // Este Break es para que no mate a dos bichos a
+								// la vez
+					}
+				}
+
 				if (numSprites == 1) {
 					ultimo = true;
+
 				}
 			}
 
-		} else if (numSprites < 4 && xtouch != 0) {
+		} else if (numSprites < 8 && xtouch != 0) {
 			crearSprites(1);
 			numSprites++;
 			ultimo = false;
@@ -142,17 +156,44 @@ public class GameView extends SurfaceView {
 	}
 
 	private void crearSprites(int numSprites) {
+		miBitmap2 = BitmapFactory.decodeResource(getResources(),
+				R.drawable.malo01);
 		miBitmap = BitmapFactory
 				.decodeResource(getResources(), R.drawable.bad1);
+		int M = 5;
+		int N = 1;
 
-		for (int i = 0; i < numSprites; i++) {
-			sprites.add(new Sprite(this, miBitmap));
+		int valorEntero = (int) Math.floor(Math.random() * (N - M + 1) + M); // Valor
+																				// entre
+																				// M
+																				// y
+																				// N,
+																				// ambos
+																				// incluidos.
+		if (valorEntero % 2 == 1) {
+			for (int i = 0; i < numSprites; i++) {
+				sprites.add(new Sprite(this, miBitmap2));
+			}
+		} else {
+			for (int i = 0; i < numSprites; i++) {
+				sprites.add(new Sprite(this, miBitmap));
+			}
 		}
 
 	}
 
 	public void detenerJuego() {
+
+	}
+
+	public void detenerJuego(String string) {
+
 		loop.setRunning(false);
+		// this.mostrarAlerta(string);
+
+	}
+
+	private void mostrarAlerta(String string) {
 
 	}
 

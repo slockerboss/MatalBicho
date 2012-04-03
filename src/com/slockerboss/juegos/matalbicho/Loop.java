@@ -1,6 +1,7 @@
 package com.slockerboss.juegos.matalbicho;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 
 public class Loop extends Thread {
 	private static final int FPS = 10;

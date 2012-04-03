@@ -16,8 +16,8 @@ public class Sprite {
 	GameView gv;
 	private boolean rightDirection = true;
 	private boolean downDirection = true;
-	private int x;
-	private int y;
+	private int x = 0;
+	private int y = 0;
 	private Random rnd;
 	private int velInicialy = 0;
 	private int velInicialx = 0;
@@ -33,8 +33,8 @@ public class Sprite {
 		this.bmp = bmp;
 		this.gv = gv;
 		rnd = new Random();
-		velInicialy = rnd.nextInt(7);
-		velInicialx = rnd.nextInt(7);
+		velInicialy = rnd.nextInt(5)+1;
+		velInicialx = rnd.nextInt(5)+2;
 
 		paint = new Paint();
 		paint.setColor(Color.BLUE);
@@ -60,9 +60,9 @@ public class Sprite {
 
 	private void actualizarEstado() {
 
-		// int srcY = 1 * this.altoSprite;
+		
 
-		if ((x < gv.getWidth() - this.altoSprite) && rightDirection) {
+		if ((x < gv.getWidth() - this.anchoSprite) && rightDirection) {
 			x = x + velInicialx;
 			rightDirection = true;
 
@@ -70,6 +70,7 @@ public class Sprite {
 			rightDirection = false;
 			x = x - velInicialx;
 			if (x < 1) {
+//				gv.detenerJuego("has perdido!!");
 				rightDirection = true;
 			}
 
@@ -91,9 +92,12 @@ public class Sprite {
 													// mostrando cada frame
 	}
 
-	private void cambiarColor(int color) {
-		paint.setColor(color);
 
+
+	public boolean isColision(float xtouch, float ytouch) {
+		if (xtouch > x && xtouch < x + anchoSprite && ytouch > y && ytouch < y + altoSprite) 
+		return true;
+		else return false;
 	}
 
 }

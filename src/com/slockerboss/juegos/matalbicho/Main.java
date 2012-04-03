@@ -1,6 +1,9 @@
 package com.slockerboss.juegos.matalbicho;
 
 import android.app.Activity;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,6 +33,8 @@ public class Main extends Activity implements OnTouchListener {
 	GameView gameView;
 	TextView textView;
 	ImageView imageView;
+	private Canvas canvas;
+	private Paint paint;
 
 	/**
 	 * Constructor of Main, that extends Activity. Here I set de current View
@@ -43,24 +48,23 @@ public class Main extends Activity implements OnTouchListener {
 		setContentView(R.layout.tocaparaempezar);
 
 		gameView = new GameView(this, 4);
-		textView = (TextView) findViewById(R.id.TocaParaEmpezar);
 
 		imageView = (ImageView) findViewById(R.id.MoteroFondo);
 		imageView.setOnTouchListener(this);
-		// imageView.setImageResource(R.drawable.motero_fondo2);
 
-		imageView.setBackgroundResource(R.drawable.motero_fondo2);
+		// textView = (TextView) findViewById(R.id.TocaParaEmpezar);
 
 	}
 
 	/**
 	 * Method of interface onTouchLister from android
+	 * 
 	 * @param v
 	 *            The view that receives the event.
 	 * @param event
 	 *            The event.
-	 * @return boolean. False when you don't want the "up" action is registered (when you
-	 *         up your finger)
+	 * @return boolean. False when you don't want the "up" action is registered
+	 *         (when you up your finger)
 	 */
 	public boolean onTouch(View v, MotionEvent event) {
 		this.setContentView(gameView);
