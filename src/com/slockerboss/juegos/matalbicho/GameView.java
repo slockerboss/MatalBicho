@@ -14,9 +14,17 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
+/**
+ * @author Luis Slokcer
+ * @version 1.0
+ * 
+ *          The GameView class is the custom view of the game, it extends
+ *          SurfaceView, (the games often extends SurfaceView, and not View) @ *
+ */
 public class GameView extends SurfaceView {
-	
-	private int numSprites = 4;
+	/** Description of numSprites */
+	int numSprites = 4;
+	/** Description of loop */
 	Loop loop;
 	SurfaceHolder sfHolder;
 
@@ -26,21 +34,22 @@ public class GameView extends SurfaceView {
 	float xtouch = 0;
 	float ytouch = 0;
 
-	private List<Sprite> sprites = new ArrayList<Sprite>();
+	List<Sprite> sprites = new ArrayList<Sprite>();
 
-	private Circle circulo;
-	private boolean ultimo = false;
+	Circle circulo;
+	boolean ultimo = false;
 
 	/* ### CONSTRUCTORS ### */
-	public GameView(Context context){
+	public GameView(Context context) {
 		super(context);
 	}
+
 	public GameView(Context context, int numSprites) {
 		super(context);
 		this.numSprites = numSprites;
 		paint = new Paint();
 		loop = new Loop(this);
-		
+
 		sfHolder = getHolder();
 		this.setOnTouchListener(new OnTouchListener() {
 
