@@ -26,7 +26,7 @@ public class Circle {
 
 
 	public void dibuja(Canvas canvas){
-		paint.setColor(Color.BLUE);
+		paint.setColor(Color.RED);
 		canvas.drawCircle(cx, cy, radio, paint);
 		
 	}

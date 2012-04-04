@@ -30,16 +30,19 @@ public class GameView extends SurfaceView {
 
 	Bitmap miBitmap;
 	Bitmap miBitmap2;
+	Bitmap sangre;
 	Paint paint;
 
-	float xtouch = 0;
-	float ytouch = 0;
-
+	int xtouch = 0;
+	int ytouch = 0;
+	
+	List<TempSprite> tempSprites = new ArrayList<TempSprite>();
 	List<Sprite> sprites = new ArrayList<Sprite>();
 
 	Circle circulo;
 	boolean ultimo = false;
 	private int cont;
+	
 
 	/* ### CONSTRUCTORS ### */
 	public GameView(Context context) {
@@ -53,21 +56,12 @@ public class GameView extends SurfaceView {
 		loop = new Loop(this);
 
 		sfHolder = getHolder();
-		this.setOnTouchListener(new OnTouchListener() {
-
-			public boolean onTouch(View gameView, MotionEvent event) {
-				xtouch = event.getX();
-				ytouch = event.getY();
-				crearOdestruir();
-				return false;
-
-			}
-		});
+	
 		sfHolder.addCallback(new SurfaceHolder.Callback() {
 
 			public void surfaceCreated(SurfaceHolder holder) {
 				crearSprites(GameView.this.numSprites);
-
+				
 				loop.setRunning(true);
 				loop.start();
 
@@ -92,6 +86,17 @@ public class GameView extends SurfaceView {
 
 			}
 		});
+		
+		this.setOnTouchListener(new OnTouchListener() {
+
+			public boolean onTouch(View gameView, MotionEvent event) {
+				xtouch = (int) event.getX();
+				ytouch = (int) event.getY();
+				crearOdestruir();
+				return false;
+
+			}
+		});
 
 	}
 
@@ -99,7 +104,7 @@ public class GameView extends SurfaceView {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		canvas.drawColor(Color.BLACK);
-		circulo = new Circle(this, xtouch, ytouch, 25);
+		circulo = new Circle(this, xtouch, ytouch, 15);
 
 		paint.setColor(Color.RED);
 		canvas.drawLine(this.getWidth() / 2, 0, this.getWidth() / 2,
@@ -113,6 +118,9 @@ public class GameView extends SurfaceView {
 
 		for (Sprite sprite : sprites) {
 			sprite.dibuja(canvas);
+		}
+		for (TempSprite tsprite : tempSprites) {
+			tsprite.dibuja(canvas);
 		}
 
 	}
@@ -128,6 +136,8 @@ public class GameView extends SurfaceView {
 					Sprite spriteTemp = sprites.get(cont);
 					if (spriteTemp.isColision(xtouch, ytouch)) {
 						sprites.remove(cont);
+						
+						tempSprites.add(new TempSprite(this,tempSprites, sangre, xtouch, ytouch));
 						numSprites--;
 						break; // Este Break es para que no mate a dos bichos a
 								// la vez
@@ -160,7 +170,18 @@ public class GameView extends SurfaceView {
 				R.drawable.malo01);
 		miBitmap = BitmapFactory
 				.decodeResource(getResources(), R.drawable.bad1);
-		int M = 5;
+		
+		
+		
+		
+		sangre = BitmapFactory.decodeResource(getResources(),
+				R.drawable.sangre);
+//		tempSprites.add(new TempSprite(GameView.this, sangre, xtouch, ytouch));
+		
+		
+		
+		
+		int M = 4;
 		int N = 1;
 
 		int valorEntero = (int) Math.floor(Math.random() * (N - M + 1) + M); // Valor
@@ -204,12 +225,12 @@ public class GameView extends SurfaceView {
 
 	/* ### SETTERS/GETTERS ### */
 	public void comunicateXtouch(float x) {
-		this.xtouch = x;
+		this.xtouch = (int) x;
 
 	}
 
 	public void comunicateTtouch(float y) {
-		this.ytouch = y;
+		this.ytouch = (int) y;
 
 	}
 

@@ -16,9 +16,11 @@ public final class R {
         public static final int careto_redondo=0x7f020002;
         public static final int good1=0x7f020003;
         public static final int ic_launcher=0x7f020004;
-        public static final int malo01=0x7f020005;
-        public static final int motero_fondo=0x7f020006;
-        public static final int motero_fondo2=0x7f020007;
+        public static final int ic_launcherd=0x7f020005;
+        public static final int malo01=0x7f020006;
+        public static final int motero_fondo=0x7f020007;
+        public static final int motero_fondo2=0x7f020008;
+        public static final int sangre=0x7f020009;
     }
     public static final class id {
         public static final int MoteroFondo=0x7f050001;

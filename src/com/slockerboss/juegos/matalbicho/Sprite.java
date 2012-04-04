@@ -46,7 +46,7 @@ public class Sprite {
 
 	public void dibuja(Canvas canvas) {
 		actualizarEstado();
-		int srcX = currentFrame * this.altoSprite;
+		int srcX = currentFrame * this.anchoSprite; //CurrentFrame va valiendo 1,2,3 consecutivamente
 		rectangulo_fuente = new Rect(srcX, altoSprite, srcX + anchoSprite,
 				2 * altoSprite);
 		rectangulo_destino = new Rect(x, y, x + anchoSprite, y + altoSprite);
