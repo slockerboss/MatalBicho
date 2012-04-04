@@ -26,8 +26,26 @@ public class TempSprite {
 	private Paint paint;
 	List<TempSprite> tempSprites;
 
-	public TempSprite(GameView gv, List<TempSprite> tempSprites, Bitmap bmp, float xtouch, float ytouch) {
+	public TempSprite(GameView gv, List<TempSprite> tempSprites, Bitmap bmp,
+			float xtouch, float ytouch) {
 		this.tempSprites = tempSprites;
+
+		this.bmp = bmp;
+		this.gv = gv;
+		this.x = (int) xtouch;
+		this.y = (int) ytouch;
+
+		this.anchoSprite = bmp.getWidth();
+		this.altoSprite = bmp.getHeight();
+		paint = new Paint();
+		paint.setColor(Color.GREEN);
+
+	}
+	
+	public TempSprite(GameView gv,  Bitmap bmp,
+			float xtouch, float ytouch) {
+		this.tempSprites = tempSprites;
+
 		this.bmp = bmp;
 		this.gv = gv;
 		this.x = (int) xtouch;
@@ -41,18 +59,29 @@ public class TempSprite {
 	}
 
 	public void dibuja(Canvas canvas) {
-		actualizarEstado();
-	
-		canvas.drawBitmap(bmp, x - anchoSprite/2, y-altoSprite/2, null);
 
+		canvas.drawBitmap(bmp, x - anchoSprite / 2, y - altoSprite / 2, null);
 
 	}
 
-	private void actualizarEstado() {
+	private void actualizarEstado() throws Throwable {
 		SpriteLive--;
+
 		if (SpriteLive < 1) {
-//			tempSprites.remove(1);
+		
+//			borraSprite();
+
 		}
+
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+
+		super.finalize();
+	}
+
+	private void destruir() {
 
 	}
 

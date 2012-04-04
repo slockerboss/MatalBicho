@@ -35,14 +35,15 @@ public class GameView extends SurfaceView {
 
 	int xtouch = 0;
 	int ytouch = 0;
-	
+
 	List<TempSprite> tempSprites = new ArrayList<TempSprite>();
 	List<Sprite> sprites = new ArrayList<Sprite>();
 
 	Circle circulo;
 	boolean ultimo = false;
 	private int cont;
-	
+	TempSprite tempSprite;
+	private int numSangre;
 
 	/* ### CONSTRUCTORS ### */
 	public GameView(Context context) {
@@ -56,12 +57,12 @@ public class GameView extends SurfaceView {
 		loop = new Loop(this);
 
 		sfHolder = getHolder();
-	
 		sfHolder.addCallback(new SurfaceHolder.Callback() {
 
 			public void surfaceCreated(SurfaceHolder holder) {
 				crearSprites(GameView.this.numSprites);
-				
+				crearTempSprites(3);
+
 				loop.setRunning(true);
 				loop.start();
 
@@ -86,7 +87,7 @@ public class GameView extends SurfaceView {
 
 			}
 		});
-		
+
 		this.setOnTouchListener(new OnTouchListener() {
 
 			public boolean onTouch(View gameView, MotionEvent event) {
@@ -111,6 +112,7 @@ public class GameView extends SurfaceView {
 				this.getHeight(), paint);
 
 		if (xtouch != 0) {
+
 			circulo.dibuja(canvas);
 		}
 
@@ -126,6 +128,7 @@ public class GameView extends SurfaceView {
 	}
 
 	protected void crearOdestruir() {
+		if(numSangre>1)numSangre++;
 
 		if (xtouch > this.getWidth() / 2) {
 			if (!ultimo) {
@@ -136,8 +139,7 @@ public class GameView extends SurfaceView {
 					Sprite spriteTemp = sprites.get(cont);
 					if (spriteTemp.isColision(xtouch, ytouch)) {
 						sprites.remove(cont);
-						
-						tempSprites.add(new TempSprite(this,tempSprites, sangre, xtouch, ytouch));
+						crearTempSprites(1);
 						numSprites--;
 						break; // Este Break es para que no mate a dos bichos a
 								// la vez
@@ -158,39 +160,18 @@ public class GameView extends SurfaceView {
 
 	}
 
-	private void eliminarSprites(int numSprites) {
-		for (int i = 0; i < numSprites; i++) {
-			sprites.remove(1);
-		}
 
-	}
 
 	private void crearSprites(int numSprites) {
 		miBitmap2 = BitmapFactory.decodeResource(getResources(),
 				R.drawable.malo01);
 		miBitmap = BitmapFactory
 				.decodeResource(getResources(), R.drawable.bad1);
-		
-		
-		
-		
-		sangre = BitmapFactory.decodeResource(getResources(),
-				R.drawable.sangre);
-//		tempSprites.add(new TempSprite(GameView.this, sangre, xtouch, ytouch));
-		
-		
-		
-		
+
 		int M = 4;
 		int N = 1;
 
-		int valorEntero = (int) Math.floor(Math.random() * (N - M + 1) + M); // Valor
-																				// entre
-																				// M
-																				// y
-																				// N,
-																				// ambos
-																				// incluidos.
+		int valorEntero = (int) Math.floor(Math.random() * (N - M + 1) + M);
 		if (valorEntero % 2 == 1) {
 			for (int i = 0; i < numSprites; i++) {
 				sprites.add(new Sprite(this, miBitmap2));
@@ -200,6 +181,16 @@ public class GameView extends SurfaceView {
 				sprites.add(new Sprite(this, miBitmap));
 			}
 		}
+
+	}
+
+	protected void crearTempSprites(int numSprites) {
+		sangre = BitmapFactory
+				.decodeResource(getResources(), R.drawable.sangre);
+
+		tempSprites.add(new TempSprite(this,  sangre, xtouch,
+				ytouch));
+	
 
 	}
 
@@ -214,9 +205,6 @@ public class GameView extends SurfaceView {
 
 	}
 
-	private void mostrarAlerta(String string) {
-
-	}
 
 	public void arrancarJuego() {
 		loop.setRunning(true);
